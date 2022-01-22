@@ -7,14 +7,13 @@ import (
 	"github.com/fatih/color"
 )
 
-func Log(message string) {
-	msg := ""
+func Log(message string, messageType string) {
+	head := ""
 
 	dt := time.Now()
-	date := dt.Format("<01-02-2006 15:04:05> ")
-	msg += color.WhiteString(date)
+	date := dt.Format("<01-02-2006 15:04:05>")
+	head += color.WhiteString(date)
+	head += color.GreenString(" [" + messageType + "]")
 
-	msg += message
-
-	fmt.Println(msg)
+	fmt.Println(fmt.Sprintf("%-52v ", head) + message)
 }
