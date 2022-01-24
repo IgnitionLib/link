@@ -1,7 +1,6 @@
 package protocol
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 )
@@ -59,8 +58,6 @@ func ParsePacket(data string) *Packet {
 		p.Fields = append(p.Fields, PacketField{DataType, Value})
 	}
 
-	/* === Obviously, returning the result === */
-	fmt.Println(p)
 	return &p
 }
 

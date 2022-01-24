@@ -1,6 +1,8 @@
 package network_driver
 
 import (
+	"ignition-link/src/link/protocol"
+
 	"bufio"
 	"io"
 	"log"
@@ -10,6 +12,8 @@ import (
 
 type NetworkNode struct {
 	Address string
+
+	con net.Conn
 }
 
 func (this *NetworkNode) Connect() {
@@ -17,6 +21,8 @@ func (this *NetworkNode) Connect() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	this.con = con
 
 	defer con.Close()
 
@@ -31,7 +37,10 @@ func (this *NetworkNode) Connect() {
 
 		switch err {
 		case nil:
-			log.Println(strings.TrimSpace(serverResponse))
+			d := strings.TrimSpace(serverResponse)
+
+			protocol.ParsePacket(d)
+			log.Println(d)
 		case io.EOF:
 			log.Println("server closed the connection")
 			return
@@ -40,4 +49,8 @@ func (this *NetworkNode) Connect() {
 			return
 		}
 	}
+}
+
+func (this *NetworkNode) Send(data string) {
+	this.con.Write([]byte(data))
 }

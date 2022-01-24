@@ -1,7 +1,6 @@
 package network_driver
 
 import (
-	"ignition-link/src/system"
 	"net"
 
 	"fmt"
@@ -30,7 +29,6 @@ func (this *NetworkScanner) CheckAddress(p1 int, p2 int) {
 
 	// Connection did not time out
 	if err == nil {
-		system.Log("Discovered open port on "+addr, "debug")
 		this.availableAddresses = append(this.availableAddresses, addr)
 
 		conn.Close()
@@ -50,6 +48,4 @@ func (this *NetworkScanner) ScanLocal() {
 
 		time.Sleep(time.Millisecond * 300)
 	}
-
-	fmt.Println(this.availableAddresses)
 }
