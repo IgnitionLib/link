@@ -9,7 +9,8 @@ import (
 )
 
 type NetworkDriver struct {
-	Nodes    []link.Node
+	NodeManager *link.NodeManager
+
 	NetNodes []NetworkNode
 
 	Scanner NetworkScanner
@@ -18,8 +19,9 @@ type NetworkDriver struct {
 /*
  * Initializes a new network driver and returns it
  */
-func NewNetworkDriver() NetworkDriver {
+func NewNetworkDriver(NodeManager *link.NodeManager) NetworkDriver {
 	driver := NetworkDriver{}
+	driver.NodeManager = NodeManager
 	driver.Scanner = NetworkScanner{Driver: &driver}
 
 	system.Log("Network Driver enabled!", "driver")
@@ -54,7 +56,7 @@ func (this *NetworkDriver) Scan() {
 }
 
 func (this *NetworkDriver) NewNetworkNode(address string) *NetworkNode {
-	node := NetworkNode{Address: address}
+	node := NetworkNode{Address: address, Driver: this}
 	this.NetNodes = append(this.NetNodes, node)
 
 	go node.Connect()

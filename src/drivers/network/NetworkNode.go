@@ -1,6 +1,7 @@
 package network_driver
 
 import (
+	"ignition-link/src/link"
 	"ignition-link/src/link/protocol"
 
 	"bufio"
@@ -12,6 +13,7 @@ import (
 
 type NetworkNode struct {
 	Address string
+	Driver  *NetworkDriver
 
 	con net.Conn
 }
@@ -39,8 +41,32 @@ func (this *NetworkNode) Connect() {
 		case nil:
 			d := strings.TrimSpace(serverResponse)
 
-			protocol.ParsePacket(d)
-			log.Println(d)
+			p := protocol.ParsePacket(d)
+
+			if strings.ToLower(p.PType) == "node-info" {
+				// Extract packet info
+				if len(p.Fields) < 4 {
+					break
+				}
+
+				projectName := p.Fields[0].Value
+				projectID := p.Fields[1].Value
+				platform := p.Fields[2].Value
+				version := p.Fields[3].Value
+
+				// Register Node
+				this.Driver.NodeManager.RegisterNode(link.Node{
+					Driver:  "network",
+					Address: this.Address,
+
+					ProjectName: projectName,
+					ProjectId:   projectID,
+
+					Version:  version,
+					Platform: platform,
+				})
+			}
+
 		case io.EOF:
 			log.Println("server closed the connection")
 			return

@@ -1,13 +1,23 @@
 package main
 
 import (
+	network_driver "ignition-link/src/drivers/network"
+	"ignition-link/src/link"
 	"ignition-link/src/system"
 
 	"github.com/fatih/color"
 )
 
 func main() {
-	system.Log(color.GreenString("Starting IgnitionLink..."))
+	system.Log(color.GreenString("Starting IgnitionLink..."), "info")
 
-	system.Log(color.GreenString("New Device Found: ") + color.CyanString("network >> 192.168.1.69"))
+	nodeManager := link.NodeManager{}
+
+	networkDriver := network_driver.NewNetworkDriver(&nodeManager)
+	go networkDriver.StartScan()
+
+	// Continuous loop to prevent Network Scan goroutine from being stopped
+	for {
+
+	}
 }

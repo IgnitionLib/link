@@ -10,8 +10,9 @@ type NodeManager struct {
 
 func (this *NodeManager) RegisterNode(node Node) {
 	node.UID = system.RandomUint64()
-
 	this.Nodes = append(this.Nodes, node)
+
+	node.LogInfo()
 }
 
 func (this *NodeManager) GetNode(uid uint64) *Node {
