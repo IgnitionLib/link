@@ -11,3 +11,12 @@ func RandomUint64() uint64 {
 	rand.Read(buf) // Always succeeds, no need to check error
 	return binary.LittleEndian.Uint64(buf)
 }
+
+func IsStringInArray(v string, arr []string) bool {
+	for _, e := range arr {
+		if e == v {
+			return true
+		}
+	}
+	return false
+}
