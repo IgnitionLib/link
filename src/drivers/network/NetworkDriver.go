@@ -1,6 +1,7 @@
 package network_driver
 
 import (
+	"fmt"
 	"ignition-link/src/link"
 	"ignition-link/src/system"
 	"time"
@@ -22,7 +23,9 @@ type NetworkDriver struct {
 func NewNetworkDriver(NodeManager *link.NodeManager) NetworkDriver {
 	driver := NetworkDriver{}
 	driver.NodeManager = NodeManager
-	driver.Scanner = NetworkScanner{Driver: &driver}
+	driver.Scanner = NetworkScanner{}
+
+	driver.Scanner.Driver = &driver
 
 	system.Log("Network Driver enabled!", "driver")
 
@@ -59,6 +62,9 @@ func (this *NetworkDriver) NewNetworkNode(address string) *NetworkNode {
 	node := NetworkNode{Address: address, Driver: this}
 	this.NetNodes = append(this.NetNodes, node)
 
+	fmt.Println(this.NetNodes)
+	fmt.Println(*this)
+
 	go node.Connect()
 
 	return &node
@@ -74,4 +80,17 @@ func (this *NetworkDriver) GetNetworkNode(address string) *NetworkNode {
 	}
 
 	return nil
+}
+
+/*
+ * Returns an array of the addresses of all connected nodes
+ */
+func (this *NetworkDriver) AllConnectedAddresses() []string {
+	var addresses []string
+
+	for i := 0; i < len(this.NetNodes); i++ {
+		addresses = append(addresses, this.NetNodes[i].Address)
+	}
+
+	return addresses
 }

@@ -1,6 +1,7 @@
 package network_driver
 
 import (
+	"ignition-link/src/system"
 	"net"
 
 	"fmt"
@@ -23,6 +24,16 @@ type NetworkScanner struct {
 func (this *NetworkScanner) CheckAddress(p1 int, p2 int) {
 	// Address with format: "192.168.{p1}.{p2}:52133"
 	addr := "192.168." + fmt.Sprint(p1) + "." + fmt.Sprint(p2) + ":52133"
+
+	if addr == "192.168.1.119:52133" {
+		fmt.Println(addr)
+		fmt.Print("NetworkScanner.go > ")
+		fmt.Println(*this.Driver)
+	}
+
+	if system.IsStringInArray(addr, this.Driver.AllConnectedAddresses()) {
+		return
+	}
 
 	d := net.Dialer{Timeout: time.Millisecond * 500}
 	conn, err := d.Dial("tcp", addr)
