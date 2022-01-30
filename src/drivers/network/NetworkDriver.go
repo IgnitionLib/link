@@ -1,7 +1,6 @@
 package network_driver
 
 import (
-	"fmt"
 	"ignition-link/src/link"
 	"ignition-link/src/system"
 	"time"
@@ -45,7 +44,7 @@ func (this *NetworkDriver) StartScan() {
 }
 
 func (this *NetworkDriver) Scan() {
-	this.Scanner.ScanLocal()
+	this.Scanner.ScanLocal(this)
 
 	for i := 0; i < len(this.Scanner.availableAddresses); i++ {
 		addr := this.Scanner.availableAddresses[i]
@@ -61,9 +60,6 @@ func (this *NetworkDriver) Scan() {
 func (this *NetworkDriver) NewNetworkNode(address string) *NetworkNode {
 	node := NetworkNode{Address: address, Driver: this}
 	this.NetNodes = append(this.NetNodes, node)
-
-	fmt.Println(this.NetNodes)
-	fmt.Println(*this)
 
 	go node.Connect()
 

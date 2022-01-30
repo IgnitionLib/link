@@ -1,7 +1,6 @@
 package network_driver
 
 import (
-	"fmt"
 	"ignition-link/src/link"
 	"ignition-link/src/link/protocol"
 
@@ -66,9 +65,6 @@ func (this *NetworkNode) Connect() {
 					Version:  version,
 					Platform: platform,
 				})
-
-				fmt.Print("NetworkNode.go > ")
-				fmt.Println(this.Driver)
 			}
 
 		case io.EOF:
