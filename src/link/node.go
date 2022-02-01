@@ -1,6 +1,7 @@
 package link
 
 import (
+	"ignition-link/src/link/protocol"
 	"ignition-link/src/system"
 	"strconv"
 	"strings"
@@ -33,4 +34,8 @@ func (this *Node) LogInfo() {
 	system.Log(color.CyanString(this.Driver+"@"+this.Address)+color.BlackString(" > ")+"Version      : "+this.Version, "node-info")
 	system.Log(color.CyanString(this.Driver+"@"+this.Address)+color.BlackString(" > ")+"Platform     : "+this.Platform, "node-info")
 	system.Log(color.CyanString(strings.Repeat("-", len(head))), "node-info")
+}
+
+func (this *Node) RecvData(packet *protocol.Packet) {
+
 }

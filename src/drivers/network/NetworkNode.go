@@ -15,7 +15,8 @@ type NetworkNode struct {
 	Address string
 	Driver  *NetworkDriver
 
-	con net.Conn
+	con  net.Conn
+	node *link.Node
 }
 
 func (this *NetworkNode) Connect() {
@@ -55,7 +56,7 @@ func (this *NetworkNode) Connect() {
 				version := p.Fields[3].Value
 
 				// Register Node
-				this.Driver.NodeManager.RegisterNode(link.Node{
+				this.node = this.Driver.NodeManager.RegisterNode(link.Node{
 					Driver:  "network",
 					Address: this.Address,
 
@@ -65,6 +66,10 @@ func (this *NetworkNode) Connect() {
 					Version:  version,
 					Platform: platform,
 				})
+			}
+
+			if this.node != nil {
+				this.node.RecvData(p)
 			}
 
 		case io.EOF:
