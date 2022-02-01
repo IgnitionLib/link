@@ -36,7 +36,7 @@ func ParsePacket(data string) *Packet {
 	/* === Analysing the raw data === */
 
 	// Get the Packet Type
-	p.PType = parts[0]
+	p.PType = strings.ToUpper(parts[0])
 	parts = parts[1:]
 
 	// Get all other (optional) fields
@@ -59,6 +59,18 @@ func ParsePacket(data string) *Packet {
 	}
 
 	return &p
+}
+
+func BuildPacket(packetType string, fields []string) string {
+	var parts []string
+
+	parts = append(parts, packetType)
+
+	for i := 0; i < len(fields); i++ {
+		parts = append(parts, fields[i])
+	}
+
+	return strings.Join(parts, " | ") + ";"
 }
 
 /*
