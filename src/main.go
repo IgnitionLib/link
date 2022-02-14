@@ -3,6 +3,7 @@ package main
 import (
 	network_driver "ignition-link/src/drivers/network"
 	"ignition-link/src/link"
+	"ignition-link/src/server"
 	"ignition-link/src/system"
 
 	"github.com/fatih/color"
@@ -16,8 +17,8 @@ func main() {
 	networkDriver := network_driver.NewNetworkDriver(&nodeManager)
 	go networkDriver.StartScan()
 
-	// Continuous loop to prevent Network Scan goroutine from being stopped
-	for {
+	go server.StartServer()
 
+	for {
 	}
 }
